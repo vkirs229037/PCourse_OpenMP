@@ -43,15 +43,15 @@ std::vector<std::string> parse_argv(int argc, char** argv) {
 // Выполнение алгоритма, запись результата, вывод времени работы
 bool execute(
     // Тип функции
-    std::vector<float> (*func)(std::vector<float>), 
+    std::vector<double> (*func)(std::vector<double>), 
     // Сама матрица графа
-    std::vector<float> graph,
+    std::vector<double> graph,
     // Название алгоритма и входного файла 
     std::string algo, std::string filename) {
         bool result = true;
-        double start = omp_get_wtime();
+        float start = omp_get_wtime();
         auto result_matrix = func(graph);
-        double end = omp_get_wtime();
+        float end = omp_get_wtime();
 
         std::cout << "Время выполнения (с):" << std::endl;
         std::cout << end - start << std::endl;
@@ -77,8 +77,8 @@ int main(int argc, char** argv) {
     if (args.empty()) return 1;
 
     std::ifstream infile(args[1]);
-    std::istream_iterator<float> start(infile), end;
-    std::vector<float> graph(start, end);
+    std::istream_iterator<double> start(infile), end;
+    std::vector<double> graph(start, end);
 
     for (auto el : graph) {
         std::cout << el << " " << std::endl;

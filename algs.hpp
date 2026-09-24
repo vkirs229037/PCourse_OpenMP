@@ -1,6 +1,6 @@
 #include <vector>
 #include <unistd.h>
 
-std::vector<float> dijkstra(std::vector<float> graph);
-std::vector<float> johnson(std::vector<float> graph);
-std::vector<float> floyd(std::vector<float> graph);
+std::vector<double> dijkstra(std::vector<double> graph);
+std::vector<double> johnson(std::vector<double> graph);
+std::vector<double> floyd(std::vector<double> graph);

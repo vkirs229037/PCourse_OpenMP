@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <iterator>
 #include <vector>
 #include <string>
 #include "algs.hpp"
@@ -74,8 +75,14 @@ bool execute(
 int main(int argc, char** argv) {
     std::vector args = parse_argv(argc, argv);
     if (args.empty()) return 1;
-    
-    std::vector<float> graph = std::vector<float>(10);
+
+    std::ifstream infile(args[1]);
+    std::istream_iterator<float> start(infile), end;
+    std::vector<float> graph(start, end);
+
+    for (auto el : graph) {
+        std::cout << el << " " << std::endl;
+    }
 
     bool result;
     if (args[1] == "dijkstra") {

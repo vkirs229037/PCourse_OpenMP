@@ -2,16 +2,17 @@
 #include <fstream>
 #include <vector>
 #include <string>
+#include "algs.hpp"
 
 void usage(char* progname) {
     std::cout << "Использование:" << std::endl;
-    std::cout << progname << " <алгоритм> " << " <входной файл> " << std::endl;
+    std::cout << progname << " <алгоритм>" << " <входной файл>" << std::endl;
 }
 
 std::vector<std::string> parse_argv(int argc, char** argv) {
     std::vector<std::string> result = {};
     // Проверка числа аргументов
-    if (argc < 2 || argc > 3) {
+    if (argc != 3) {
         usage(argv[0]);
         std::cout << "Ошибка: недостаточно аргументов" << std::endl;
         return result;

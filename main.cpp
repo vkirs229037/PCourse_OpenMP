@@ -48,10 +48,14 @@ bool execute(
     std::vector<double> graph,
     // Название алгоритма и входного файла 
     std::string algo, std::string filename) {
-        bool result = true;
         float start = omp_get_wtime();
         auto result_matrix = func(graph);
         float end = omp_get_wtime();
+
+        if (result_matrix.empty()) {
+            std::cout << "Ошибка: Алгоритм не мог быть выполнен" << std::endl;
+            return false;
+        }
 
         std::cout << "Время выполнения (с):" << std::endl;
         std::cout << end - start << std::endl;
@@ -60,16 +64,16 @@ bool execute(
         std::ofstream outfile(outfilename);
         if (!outfile.good()) {
             std::cout << "Ошибка: файл для вывода " << outfilename << " не мог быть открыть" << std::endl;
-            result = false;
+            return false;
         }
-        else {
-            for (auto el : result_matrix) {
-                outfile << el;
-                outfile << " ";
-            }
+        
+        for (auto el : result_matrix) {
+            outfile << el;
+            outfile << " ";
         }
+        
         outfile.close();
-        return result;
+        return true;
     }
 
 int main(int argc, char** argv) {

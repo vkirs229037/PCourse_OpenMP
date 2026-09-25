@@ -84,20 +84,23 @@ int main(int argc, char** argv) {
     std::istream_iterator<double> start(infile), end;
     std::vector<double> graph(start, end);
 
-    for (auto el : graph) {
-        std::cout << el << " " << std::endl;
-    }
+    // for (auto el : graph) {
+    //     std::cout << el << " " << std::endl;
+    // }
 
     bool result;
-    if (args[1] == "dijkstra") {
+    if (args[0] == "dijkstra") {
+        std::cout << "dijkstra" << std::endl;
         result = execute(dijkstra, graph, args[1], args[0]);
     }
-    else if (args[1] == "johnson")
+    else if (args[0] == "johnson")
     {
+        std::cout << "johnson" << std::endl;
         result = execute(johnson, graph, args[1], args[0]);
     }
     // Здесь точно будет "floyd"
     else {
+        std::cout << "floyd" << std::endl;
         result = execute(floyd, graph, args[1], args[0]);
     }
 

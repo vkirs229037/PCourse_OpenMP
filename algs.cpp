@@ -1,6 +1,11 @@
 #include "algs.hpp"
 
 std::vector<double> dijkstra(std::vector<double> graph) {
+    // Проверка на наличие ребер с отрицательным весом
+    auto iterator = std::find_if(graph.begin(), graph.end(),
+        [] (const double& x) { return x < 0 ? true : false; }
+    );
+    if (iterator != graph.end()) return {};
     size_t total_size = graph.size();
     if (total_size == 0) return {};
 
@@ -197,7 +202,15 @@ std::vector<double> floyd(std::vector<double> graph) {
         }
     }
 
-    // 3. Замена INF на 0 для недостижимых вершин
+    // 3. Проверка на наличие отрицательного цикла
+    // Если на главной диагонали есть отрицательные значения, значит, есть отрицательный цикл
+    for (size_t i = 0; i < n; ++i) {
+        if (dist[i * n + i] < 0.0) {
+            return {}; // Граф содержит цикл отрицательного веса
+        }
+    }
+
+    // 4. Замена INF на 0 для недостижимых вершин
     for (size_t i = 0; i < n; ++i) {
         for (size_t j = 0; j < n; ++j) {
             if (dist[i * n + j] == INF) {

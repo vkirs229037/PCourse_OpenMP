@@ -23,7 +23,7 @@ std::vector<std::string> parse_argv(int argc, char** argv) {
     std::string algo = argv[1];
     std::string filename = argv[2];
     // Проверка на то, что был задан существующий алгоритм
-    if (!(algo == "dijkstra" || algo == "jonhson" || algo == "floyd")) {
+    if (!(algo == "dijkstra" || algo == "johnson" || algo == "floyd")) {
         usage(argv[0]);
         std::cout << "Ошибка: неизвестный алгоритм " << algo << std::endl;
         return result;

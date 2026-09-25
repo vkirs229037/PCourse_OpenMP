@@ -8,14 +8,14 @@
 
 void usage(char* progname) {
     std::cout << "Использование:" << std::endl;
-    std::cout << progname << " <алгоритм>" << " <входной файл>" << std::endl;
+    std::cout << progname << " <алгоритм>" << " <входной файл>" << " <число потоков>" << std::endl;
 }
 
 // Парсировка аргументов командной строки
 std::vector<std::string> parse_argv(int argc, char** argv) {
     std::vector<std::string> result = {};
     // Проверка числа аргументов
-    if (argc != 3) {
+    if (argc != 4) {
         usage(argv[0]);
         std::cout << "Ошибка: недостаточно аргументов" << std::endl;
         return result;
@@ -35,8 +35,16 @@ std::vector<std::string> parse_argv(int argc, char** argv) {
         std::cout << "Ошибка: файл " << filename << " не может быть открыт" << std::endl;
         return result; 
     }
+    try {
+        int n_threads = std::atoi(argv[3]);
+    }
+    catch (std::exception const& e) {
+        std::cout << "Ошибка: " << e.what() << std::endl;
+        return result;
+    }
     result.push_back(algo);
     result.push_back(filename);
+    result.push_back(argv[3]);
     return result;
 }
 
@@ -87,6 +95,9 @@ int main(int argc, char** argv) {
     // for (auto el : graph) {
     //     std::cout << el << " " << std::endl;
     // }
+
+    int n_threads = std::atoi(args[2].c_str());
+    omp_set_num_threads(n_threads);
 
     bool result;
     if (args[0] == "dijkstra") {

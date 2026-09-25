@@ -156,7 +156,55 @@ std::vector<double> johnson(std::vector<double> graph) {
 }
 
 std::vector<double> floyd(std::vector<double> graph) {
-    sleep(3);
-    return graph;
-}
+    size_t total_size = graph.size();
+    if (total_size == 0) return {};
 
+    size_t n = std::sqrt(total_size);
+    if (n * n != total_size) return {};
+
+    const double INF = std::numeric_limits<double>::infinity();
+    std::vector<double> dist(total_size, INF);
+
+    // 1. Инициализация матрицы расстояний
+    for (size_t i = 0; i < n; ++i) {
+        for (size_t j = 0; j < n; ++j) {
+            if (i == j) {
+                dist[i * n + j] = 0.0;
+            } else if (graph[i * n + j] != 0.0) {
+                dist[i * n + j] = graph[i * n + j];
+            }
+        }
+    }
+
+    // 2. Алгоритм Флойда-Уоршелла
+    // Внешний цикл (по k) нельзя параллелить из-за строгой зависимости итераций.
+    // Параллелим средний цикл (по i), так как для фиксированного k обновление строк независимы.
+    for (size_t k = 0; k < n; ++k) {
+        #pragma omp parallel for
+        for (size_t i = 0; i < n; ++i) {
+            double dist_ik = dist[i * n + k];
+            if (dist_ik == INF) continue; // Оптимизация: путь через k невозможен
+
+            for (size_t j = 0; j < n; ++j) {
+                double dist_kj = dist[k * n + j];
+                if (dist_kj == INF) continue;
+
+                double new_dist = dist_ik + dist_kj;
+                if (new_dist < dist[i * n + j]) {
+                    dist[i * n + j] = new_dist;
+                }
+            }
+        }
+    }
+
+    // 3. Замена INF на 0 для недостижимых вершин
+    for (size_t i = 0; i < n; ++i) {
+        for (size_t j = 0; j < n; ++j) {
+            if (dist[i * n + j] == INF) {
+                dist[i * n + j] = 0.0;
+            }
+        }
+    }
+
+    return dist;
+}

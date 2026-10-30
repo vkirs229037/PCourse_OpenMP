@@ -56,9 +56,9 @@ bool execute(
     std::vector<double> graph,
     // Название алгоритма и входного файла 
     std::string algo, std::string filename) {
-        float start = omp_get_wtime();
+        double start = omp_get_wtime();
         auto result_matrix = func(graph);
-        float end = omp_get_wtime();
+        double end = omp_get_wtime();
 
         if (result_matrix.empty()) {
             std::cout << "Ошибка: Алгоритм не мог быть выполнен" << std::endl;
